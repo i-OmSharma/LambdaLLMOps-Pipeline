@@ -1,4 +1,4 @@
-# 🚀 LambdaLLMOps Pipeline
+#  LambdaLLMOps Pipeline
 
 > **A fully serverless, cloud-native pipeline that enables you to enrich prompts with contextual data stored in S3 and send them to an LLM (Large Language Model) for inference.**
 >
