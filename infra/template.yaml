@@ -1,0 +1,76 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  ContextBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "llmops-context-${AWS::AccountId}"
+
+  LLMApiKeyV1:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: LLMApiKeyV1
+      Description: LLM API Key (Together AI, etc.)
+
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: LambdaLeastPrivilege
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                Resource: !Sub arn:aws:s3:::${ContextBucket}/*
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                Resource: !Ref LLMApiKeyV1
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
+
+  LLMChatLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: llmops-handler
+      CodeUri: ../backend/app/
+      Handler: handler.handler
+      Runtime: nodejs20.x
+      Timeout: 60
+      MemorySize: 256
+      Role: !GetAtt LambdaRole.Arn
+      Environment:
+        Variables:
+          CONTEXT_BUCKET: !Ref ContextBucket
+          LLM_ENDPOINT: "https://api.together.xyz/v1/completions"
+          LLM_MODEL: "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free"
+          LLM_API_KEY_SECRET: !Ref LLMApiKeyV1
+
+      Events:
+        ApiChat:
+          Type: Api
+          Properties:
+            Path: /chat
+            Method: POST
+
+Outputs:
+  ApiUrl:
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/chat"
+    Description: "API Gateway endpoint"
+  S3ContextBucket:
+    Value: !Ref ContextBucket
+    Description: "S3 bucket for context files"
