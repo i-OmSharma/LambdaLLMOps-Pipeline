@@ -1,0 +1,47 @@
+# Node.js dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Next.js build outputs
+.next/
+out/
+build/
+
+# AWS SAM build outputs and temporary files
+.aws-sam/
+infra/.aws-sam/
+*.zip # For deployment packages
+
+# Vercel
+.vercel/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.log
+
+# IDE and OS specific files
+.DS_Store
+.vscode/
+
+minimal-chat-ui.zip
+
+# Specific project files that are not source code or are temporary
+api.txt
+LLMOps.png # Assuming this is a diagram/image that should not be version controlled. If it's a project asset, remove this line.
+minimal-chat-ui.zip # This is a temporary archive, should not be committed.
+
+# Lock files
+pnpm-lock.yaml # Ignore pnpm lock file if package-lock.json is preferred
