@@ -1,0 +1,13 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
+  "functions": {
+    "app/api/chat/route.ts": {
+      "maxDuration": 60
+    }
+  },
+  "env": {
+    "LAMBDA_API_URL": "https://tgo3o9jshk.execute-api.ap-south-1.amazonaws.com/Prod/chat"
+  }
+}
