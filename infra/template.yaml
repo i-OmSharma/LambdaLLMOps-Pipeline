@@ -51,7 +51,7 @@ Resources:
       Handler: handler.handler
       Runtime: nodejs20.x
       Timeout: 60
-      MemorySize: 256
+      MemorySize: 2048
       Role: !GetAtt LambdaRole.Arn
       Environment:
         Variables:
@@ -66,6 +66,10 @@ Resources:
           Properties:
             Path: /chat
             Method: POST
+        KeepWarm:
+          Type: Schedule
+          Properties:
+            Schedule: rate(5 minutes)
 
 Outputs:
   ApiUrl:
