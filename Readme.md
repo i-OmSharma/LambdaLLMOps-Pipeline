@@ -45,7 +45,6 @@ LambdaLLMOps-Pipeline/
 │   │   ├── llm_client.js         # Handles LLM API calls (Together, OpenRouter, etc.)
 │   │   ├── prompt_builder.js     # Composes user input/context as prompt for LLM
 │   │   └── utils.js              # Shared helpers (Secrets fetch, logging, error utils)
-│   ├── requirements.txt          # (Not needed for Node; use package.json instead)
 │   └── test_event.json           # Example Lambda event for dev/test
 ├── context
 │   └── demo_context.json         # Example context file (upload to S3 bucket)
@@ -60,10 +59,7 @@ LambdaLLMOps-Pipeline/
 │   ├── cleanup.sh                # Deletes/removes stack/resources
 │   └── deploy.sh                 # Wrapper for building & deploying SAM stack
 └── tests
-    ├── conftest.py               # (For Python, not needed; Jest setup for Node instead)
     └── test_handler.js           # Node Lambda unit/integration test
-
-
 ```
 
 ---
