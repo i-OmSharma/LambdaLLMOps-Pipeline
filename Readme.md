@@ -18,7 +18,7 @@
 
 ## 🏗️ Architecture
 
-![AWS Cloud Architecture](LLMOps.png)
+![AWS Cloud Architecture](node2.png)
 
 ---
 
@@ -37,26 +37,33 @@
 
 ```
 LambdaLLMOps-Pipeline/
-├── README.md
-├── template.yaml                 # Infrastructure-as-code (AWS SAM)
-├── .gitignore
-│
-├── src/
-│   └── lambda_function/
-│       ├── app.py                # Main Lambda handler
-│       ├── requirements.txt      # Python dependencies
-│       └── __init__.py
-│
-├── context/
-│   └── sample-context.json       # Sample JSON for prompt enrichment
-│
-├── tests/
-│   └── test_app.py               # Unit tests for Lambda logic
-│
-├── scripts/
-│   └── deploy.sh                 # Optional deployment script
-│
-└── .aws-sam/                     # SAM build artifacts (auto-generated)
+.
+├── backend
+│   ├── app
+│   │   ├── context_loader.js     # Loads context JSON from S3
+│   │   ├── handler.js            # Lambda entrypoint – orchestrates flow, input/output
+│   │   ├── llm_client.js         # Handles LLM API calls (Together, OpenRouter, etc.)
+│   │   ├── prompt_builder.js     # Composes user input/context as prompt for LLM
+│   │   └── utils.js              # Shared helpers (Secrets fetch, logging, error utils)
+│   ├── requirements.txt          # (Not needed for Node; use package.json instead)
+│   └── test_event.json           # Example Lambda event for dev/test
+├── context
+│   └── demo_context.json         # Example context file (upload to S3 bucket)
+├── frontend
+│   └── frontend
+│       ├── ...                   # Next.js app files (React pages, public, package.json, etc)
+├── infra
+│   └── template.yaml             # AWS SAM/CloudFormation - infra as code
+├── LLMOps.png                    # Architecture diagram or project logo
+├── Readme.md                     # Full docs, setup, tips, API docs, etc
+├── scripts
+│   ├── cleanup.sh                # Deletes/removes stack/resources
+│   └── deploy.sh                 # Wrapper for building & deploying SAM stack
+└── tests
+    ├── conftest.py               # (For Python, not needed; Jest setup for Node instead)
+    └── test_handler.js           # Node Lambda unit/integration test
+
+
 ```
 
 ---
